@@ -1,21 +1,22 @@
-# Usa la imagen oficial de Python ligera
+# Dockerfile
 FROM python:3.11-slim
 
-# Instala las librerías de sistema necesarias para mysqlclient
+# 1) Instala librerías C necesarias para mysqlclient y Pillow
 RUN apt-get update && apt-get install -y \
     default-libmysqlclient-dev build-essential \
+    libjpeg-dev zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
-# Crea y usa el directorio /app
+# 2) Copia el código al contenedor
 WORKDIR /app
 COPY . .
 
-# Actualiza pip y instala dependencias de Python
+# 3) Instala pip (y ruedas) y tus dependencias Python
 RUN pip install --upgrade pip setuptools wheel \
  && pip install -r requirements.txt
 
-# Expón el puerto (opcional, Railway lo detecta)
+# 4) Expone el puerto 8000 (opcional, Railway lo detecta)
 EXPOSE 8000
 
-# Comando por defecto: migra y arranca Gunicorn
+# 5) Al arrancar: migra y levanta Gunicorn
 CMD ["sh", "-c", "python manage.py migrate && gunicorn miempresa.wsgi --bind 0.0.0.0:8000"]

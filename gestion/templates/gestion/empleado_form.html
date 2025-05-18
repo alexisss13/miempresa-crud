@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Editar{% else %}Nuevo{% endif %} Empleado{% endblock %}
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {{ form.nombre.label_tag }} {{ form.nombre }}<br>
+    {{ form.cargo.label_tag }}  {{ form.cargo }}<br>
+    {{ form.salario.label_tag }}{{ form.salario }}<br>
+    {{ form.foto.label_tag }}    {{ form.foto }}
+    {% if form.instance.foto %}<br><img src="{{ form.instance.foto.url }}" width="80">{% endif %}<br>
+    <button type="submit">Guardar</button>
+    <a href="{% url 'empleado_list' %}">Cancelar</a>
+  </form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Empleados{% endblock %}
+{% block content %}
+  <a href="{% url 'empleado_new' %}" class="button">+ Nuevo Empleado</a>
+  <table>
+    <thead>
+      <tr><th>Nombre</th><th>Cargo</th><th>Salario</th><th>Foto</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+      {% for emp in datos %}
+      <tr>
+        <td>{{ emp.nombre }}</td>
+        <td>{{ emp.cargo }}</td>
+        <td>{{ emp.salario }}</td>
+        <td>{% if emp.foto %}<img src="{{ emp.foto.url }}" width="50" class="thumbnail">{% endif %}</td>
+        <td>
+          <a href="{% url 'empleado_edit' emp.pk %}">✎</a>
+          <a href="{% url 'empleado_delete' emp.pk %}">🗑️</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5">No hay empleados.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

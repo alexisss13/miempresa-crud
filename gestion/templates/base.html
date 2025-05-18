@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Gestión{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+    <a href="{% url 'empleado_list' %}" class="button">Empleados</a>
+    <a href="{% url 'proyecto_list' %}" class="button">Proyectos</a>
+  </nav>
+  <div class="container">
+    <h1>Mi Empresa</h1>
+    {% block content %}{% endblock %}
+  </div>
+
+    <!-- Lightbox overlay -->
+  <div id="lightbox-overlay">
+    <span class="close-btn">&times;</span>
+    <img src="" alt="imagen ampliada">
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const overlay    = document.getElementById('lightbox-overlay');
+      const overlayImg = overlay.querySelector('img');
+      const closeBtn   = overlay.querySelector('.close-btn');
+
+      // Al hacer clic en cualquier miniatura...
+      document.querySelectorAll('img.thumbnail').forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function(){
+          overlayImg.src = this.src;
+          overlay.style.display = 'flex';
+        });
+      });
+
+      // Cerrar con la “X”
+      closeBtn.addEventListener('click', () => overlay.style.display = 'none');
+      // O clic fuera de la imagen
+      overlay.addEventListener('click', e => {
+        if (e.target === overlay) overlay.style.display = 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>
